@@ -92,25 +92,25 @@
 	      this.render();
 	      $.ajax({
 	        type: "POST",
-	        url: "./users/${this.userId}/follow",
-	        dataType: '$.ajax',
+	        url: this.userId + "/follow",
+	        dataType: 'json',
 	        success() {
-	          FollowToggle.followState = "followed"   ;
-	          FollowToggle.render();
+	          this.followState = "followed"   ;
+	          this.render();
 	        }
-	      })
-	    }else if (this.followState === "followed") {
+	      });
+	    } else if (this.followState === "followed") {
 	      this.followState = "unfollowing";
 	      this.render();
 	      $.ajax({
 	        type: "DELETE",
-	        url: "./users/${this.userId}/follow",
-	        dataType: '$.ajax',
+	        url: this.userId + "/follow",
+	        dataType: 'json',
 	        success() {
-	          FollowToggle.followState = "unfollowed"   ;
-	          FollowToggle.render();
+	          this.followState = "unfollowed"   ;
+	          this.render();
 	        }
-	      })
+	      });
 	    }
 	  }
 	}
@@ -122,6 +122,16 @@
 /* 2 */
 /***/ function(module, exports) {
 
+	class UsersSearch {
+	  constructor(el) {
+	    this.$el = $(el);
+	
+	  };
+	
+	  handleInput(event) {
+	
+	  };
+	}
 
 
 /***/ }
