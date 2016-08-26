@@ -46,10 +46,12 @@
 
 	const FollowToggle = __webpack_require__(1);
 	const UsersSearch = __webpack_require__(2);
+	const TweetCompose = __webpack_require__(3);
 	
 	$( () => {
 	  $('button.follow-toggle').each((idx, button) => new FollowToggle(button, {}));
 	  $('nav.users-search').each((idx, search) => new UsersSearch(search));
+	  $('form.tweet-compose').each((idx, tweet) => new TweetCompose(tweet));
 	})
 
 
@@ -96,7 +98,7 @@
 	        dataType: 'json',
 	        success() {
 	          this.followState = "followed"   ;
-	          this.render();
+	          this.render;
 	        }
 	      });
 	    } else if (this.followState === "followed") {
@@ -108,7 +110,7 @@
 	        dataType: 'json',
 	        success() {
 	          this.followState = "unfollowed"   ;
-	          this.render();
+	          this.render;
 	        }
 	      });
 	    }
@@ -120,18 +122,70 @@
 
 /***/ },
 /* 2 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
+	const FollowToggle = __webpack_require__(1);
+	
 	class UsersSearch {
 	  constructor(el) {
 	    this.$el = $(el);
+	    this.$input = this.$el.find("input[name=username]");
+	    this.$ul = this.$el.find(".users");
 	
+	    this.$input.on("input", this.handleInput.bind(this));
 	  };
 	
 	  handleInput(event) {
+	    $.ajax({
+	      method: "GET",
+	      url: "/users/search",
+	      dataType: 'json',
+	      data: { query: this.$input.val() },
+	      success: this.renderResults.bind(this)
+	    })
+	  };
+	
+	  renderResults(users) {
+	    this.$ul.empty();
+	
+	    for(var i = 0; i < users.length; i++) {
+	      var user = users[i];
+	
+	      var $li = $("<li></li>");
+	
+	      var $a = ("<a href=/users/" + user.id + ">" + user.username + "</a>");
+	
+	      var $button = $("<button></button>");
+	      new FollowToggle($button, {userId: user.id, followState: user.followed ? "followed" : "unfollowed"});
+	
+	      $li.append($a);
+	      $li.append($button);
+	
+	      this.$ul.append($li);
+	    }
+	  };
+	}
+	
+	module.exports = UsersSearch;
+
+
+/***/ },
+/* 3 */
+/***/ function(module, exports) {
+
+	class TweetCompose {
+	  constructor(el) {
+	    this.$el = $(el);
+	
+	    this.$el.on("submit", this.submit.bind(this));
+	  };
+	
+	  submit(event) {
 	
 	  };
 	}
+	
+	module.exports = TweetCompose;
 
 
 /***/ }

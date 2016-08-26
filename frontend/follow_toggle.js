@@ -37,7 +37,7 @@ class FollowToggle {
         dataType: 'json',
         success() {
           this.followState = "followed"   ;
-          this.render();
+          this.render;
         }
       });
     } else if (this.followState === "followed") {
@@ -49,7 +49,7 @@ class FollowToggle {
         dataType: 'json',
         success() {
           this.followState = "unfollowed"   ;
-          this.render();
+          this.render;
         }
       });
     }
