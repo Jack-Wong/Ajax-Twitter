@@ -176,10 +176,29 @@
 	class TweetCompose {
 	  constructor(el) {
 	    this.$el = $(el);
-	    this.$input = this.$el.find("textarea[name='tweet[content]']")
+	    this.$input = this.$el.find("textarea[name='tweet[content]']");
 	
 	    this.$el.on("submit", this.submit.bind(this));
 	    this.$input.on("input", this.counter.bind(this))
+	
+	    this.$addMentionedUser = this.$el.find("a.add-mentioned-user");
+	    this.$addMentionedUser.on("click", this.addMentionedUser.bind(this));
+	
+	    this.$removeMention = this.$el.find(".mentioned-users");
+	    this.$removeMention.on("click", "a.remove-mentioned-user", this.removeMentionedUser.bind(this));
+	  };
+	
+	  removeMentionedUser(event) {
+	    event.preventDefault();
+	
+	    $(event.currentTarget).parent().remove();
+	  };
+	
+	  addMentionedUser(event) {
+	    event.preventDefault();
+	
+	    var $scriptTag = $(this.$el.find("script[type='text/template']")).html();
+	    this.$el.find(".mentioned-users").append($scriptTag);
 	  };
 	
 	  submit(event) {
@@ -204,7 +223,7 @@
 	
 	  clearInput() {
 	    this.$input[0].value = "";
-	    this.$el.find("select")[0].value = "";
+	    this.$el.find("a.remove-mentioned-user").value = "";
 	  }
 	
 	  handleSuccess(tweet) {
