@@ -53,6 +53,8 @@ class User < ActiveRecord::Base
 
     @tweets = @tweets.limit(limit)
     @tweet = @tweets.where("tweets.created_at < :max_created_at", max_created_at: max_created_at)
+
+    @tweet
   end
 
   def follows?(user)
